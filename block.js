@@ -8,6 +8,12 @@ class Block {
 	static genesis(){
 		return new this('Genesis time','-----','first-h45s',[]);
 	}
+	static mineBlock(lastBlock, data){
+		const timestamp = Date.now();
+		const lastHash  = lastBlock.hash;
+		const hash      = 'todo-hash';
+		return new this(timestamp,lastHash,hash,data);
+	}
 	toString() {
 		return `Block -
 			Timestamp: ${this.timestamp}
