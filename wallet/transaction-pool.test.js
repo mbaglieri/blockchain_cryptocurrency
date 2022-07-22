@@ -9,10 +9,9 @@ describe('TransactionPool', () => {
 		wallet      = new Wallet();
 		amount      = 50;
 		recipient   = 'r3c1p13nt';
-		transaction = Transaction.newTransaction(wallet, 'rand-4dr355', 30);
-		tp.updateOrAddTransaction(transaction);
+   		transaction = wallet.createTransaction('r4nd-4dr355', 30, tp);
 	});
-
+ 
 	it('adds a transaction to the pool', () => {
 		expect(tp.transactions.find(t => t.id === transaction.id))
 			.toEqual(transaction);
@@ -24,6 +23,29 @@ describe('TransactionPool', () => {
 		tp.updateOrAddTransaction(newTransaction);
 		expect(JSON.stringify(tp.transactions.find(t => t.id === newTransaction.id)))
 			.not.toEqual(oldTransaction);
+	});
+	describe('mixing valid and corrupt transactions', () => {
+		let validTransactions;
+		beforeEach(() => {
+			validTransactions = [...tp.transactions];
+			for (let i=0; i<6; i++) {
+				wallet = new Wallet();
+				transaction = wallet.createTransaction('r4nd-4dr355', 30, tp);
+				if (i%2==0) {
+					transaction.input.amount = 9999;
+				} else {
+					validTransactions.push(transaction);
+				}
+			}
+		});
+
+		it('shows a difference between valid and corrupt transactions', () => {
+			expect(JSON.stringify(tp.transactions)).not.toEqual(JSON.stringify(validTransactions));
+		});
+
+		it('grabs valid transactions', () => {
+			expect(tp.validTransactions()).toEqual(validTransactions);
+		});
 	});
 
 });
