@@ -29,7 +29,7 @@ class Blockchain{
 			console.log('the Recived chain is not valid');
 			return;
 		}
-		this.chain = newChain;
+		this.chain = newChain; 
 	}
 }
 
