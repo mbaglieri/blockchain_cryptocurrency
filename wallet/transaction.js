@@ -31,11 +31,13 @@ class Transaction {
 			signature: senderWallet.sign(ChainUtil.hash(transaction.outputs))
 		}
 	}
-	static rewardTransaction(minerWallet, blockchainWallet){
-		new Transaction.transactionWithOutputs(blockchainWallet, [{
+
+	static rewardTransaction(minerWallet, blockchainWallet) {
+		return Transaction.transactionWithOutputs(blockchainWallet, [{
 			amount: MINING_REWARD, address: minerWallet.publicKey
 		}]);
 	}
+
 	static verifyTransaction(transaction){
 		return ChainUtil.verifySignature(
 			transaction.input.address,
