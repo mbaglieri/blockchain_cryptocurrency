@@ -33,4 +33,11 @@ describe('Transaction', () => {
 			expect(transaction).toEqual(undefined);
 		});
 	});
+	it('validates a valid transaction',() =>{
+		expect(Transaction.verifyTransaction(transaction)).toBe(true);
+	})
+	it('invalidates a corrupt transaction',() =>{
+		transaction.outputs[0].amount = 50000;
+		expect(Transaction.verifyTransaction(transaction)).toBe(false);
+	})
 });
